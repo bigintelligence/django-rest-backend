@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from .models import Inmueble
+from .serializers import InmuebleSerializer
 
-# Create your views here.
+
+class InmuebleViewSet(viewsets.ModelViewSet):
+    queryset = Inmueble.objects.all()
+    serializer_class = InmuebleSerializer
