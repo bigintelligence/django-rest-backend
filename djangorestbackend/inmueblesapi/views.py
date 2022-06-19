@@ -7,7 +7,9 @@ from django.conf import settings
 from .models import Inmueble
 from .serializers import InmuebleSerializer
 from .utils import CsvFileInmueblesSaver
+import logging
 
+logger = logging.getLogger(__name__)
 FILE_PATH = os.path.join(settings.BASE_DIR, '../', 'assets.csv')
 
 
@@ -29,5 +31,5 @@ class UploadCSVViewSet(APIView):
                 return Response(csv_saver.response, status=500)
 
         except Exception as e:
-            print(e)
+            logger.exception(e)
             return Response({'upload_state': 'Error'}, status=500)

@@ -1,5 +1,8 @@
 from csv import DictReader
 from .serializers import InmuebleSerializer
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def save_inmueble_on_db(inmueble_as_dic):
@@ -12,7 +15,7 @@ def save_inmueble_on_db(inmueble_as_dic):
             serializer.save()
             return serializer.data
     except Exception as e:
-        print(e)
+        logger.exception(e)
     return None
 
 
@@ -31,13 +34,14 @@ class CsvFileInmueblesSaver:
         try:
             with open(self.path_filename, 'r', encoding='Latin-1') as file:
                 self.data_list_of_dic = DictReader(file)
-                self.save_data()
+                self.__save_data()
             return self
         except Exception as e:
+            logger.exception(e)
             self.response['upload_state'] = 'Error'
             self.response['saved_result'] = e.__str__()
 
-    def save_data(self):
+    def __save_data(self):
         try:
             for row in self.data_list_of_dic:
                 self.data_readed = self.data_readed + 1
@@ -47,6 +51,7 @@ class CsvFileInmueblesSaver:
             self.response['saved_result'] = 'rows saved: {}/{}'.format(self.data_saved, self.data_readed)
             return self
         except Exception as e:
+            logger.exception(e)
             self.response['upload_state'] = 'Error'
             self.response['saved_result'] = e.__str__()
 
