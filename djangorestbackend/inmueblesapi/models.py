@@ -2,6 +2,7 @@ from django.contrib.gis.db import models
 
 
 class Inmueble(models.Model):
+    id = models.AutoField(primary_key=True)
     build_status = models.IntegerField(blank=False)
     is_active = models.BooleanField(blank=False)
     start_month = models.IntegerField(blank=False)
