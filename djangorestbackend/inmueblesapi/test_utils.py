@@ -1,10 +1,13 @@
+import os
 import pytest
+from django.conf import settings
 from .utils import save_inmueble_on_db, CsvFileInmueblesSaver
 
 
 @pytest.mark.django_db
 class TestUtils:
     def test_save_inmueble_on_db(self):
+        """test for save one row in DB"""
         inmueble = {
             'build_status': 1,
             'is_active': False,
@@ -36,7 +39,8 @@ class TestUtils:
         assert result['id_uda'] == '27-99196812134_515750'
 
     def test_save_csvfile_on_db(self):
-        file_path = '../assets.csv'
+        """test for save the csv file assets.csv in DB"""
+        file_path = os.path.join(settings.BASE_DIR, '../', 'assets.csv')
         csv_saver = CsvFileInmueblesSaver(file_path)
         csv_saver.read_save_file()
         print(csv_saver.response)
