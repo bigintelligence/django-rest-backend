@@ -40,7 +40,7 @@ class TestUtils:
 
     def test_save_csvfile_on_db(self):
         """test for save the csv file assets.csv in DB"""
-        file_path = os.path.join(settings.BASE_DIR, '../', 'assets.csv')
+        file_path = os.path.join(settings.BASE_DIR, 'assets.csv')
         csv_saver = CsvFileInmueblesSaver(file_path)
         csv_saver.read_save_file()
         print(csv_saver.response)

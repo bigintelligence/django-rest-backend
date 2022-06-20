@@ -1,16 +1,42 @@
 version: '3.7'
 
 services:
+  djangorestbackend:
+    restart: always
+    build:
+      context: ./djangorestbackend
+      args:
+        DJANGO_ALLOWED_HOSTS: "127.0.0.1 localhost 0.0.0.0 api"
+        DJANGO_SECRET_KEY: "django-insecure-#43(78zpixrm)k^w+njz1!8zn73^yfr=l^wf$$@$h969c2z==4!"
+        DJANGO_CORS_ORIGIN_WHITELIST: "http://127.0.0.1 http://localhost http://0.0.0.0 http://localhost:3000 http://127.0.0.1:3000 http://0.0.0.0:3000 http://api"
+        DB_ENGINE: "django.contrib.gis.db.backends.postgis"
+        PG_DRIVER: "postgres"
+        PG_USER: "john"
+        PG_PASS: "JohnCA"
+        PG_HOST: "db"
+        PG_PORT: "5432"
+        PG_BASE: "djangorestbackend"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    command:
+      - /bin/bash
+      - -c
+      - |
+        python pgconnectcheck.py -db $$PG_BASE -u $$PG_USER -hs $$PG_HOST -pw $$PG_PASS -p $$PG_PORT
+        python manage.py makemigrations 
+        python manage.py migrate 
+        python manage.py runserver 0.0.0.0:8000
   db:
     image: postgis/postgis
     volumes:
-      - postgis_data:/var/lib/postgresql/data/
+      - postgis_data:/var/lib/postgresqlgis/data/
     environment:
       - POSTGRES_USER=john
       - POSTGRES_PASSWORD=JohnCA
-      - POSTGRES_DB=djangosqlalchemy
+      - POSTGRES_DB=djangorestbackend
     ports:
       - '5432:5432'
 volumes:
-  build_folder:
   postgis_data:

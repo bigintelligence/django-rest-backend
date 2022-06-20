@@ -69,7 +69,7 @@ WSGI_APPLICATION = 'djangorestbackend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DB_ENGINE', 'django.contrib.gis.db.backends.postgis'),
-        'NAME': os.getenv('PG_BASE', 'djangosqlalchemy'),
+        'NAME': os.getenv('PG_BASE', 'djangorestbackend'),
         'USER': os.getenv('PG_USER', 'john'),
         'PASSWORD': os.getenv('PG_PASS', 'JohnCA'),
         'HOST': os.getenv('PG_HOST', 'localhost'),
